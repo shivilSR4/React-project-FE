@@ -12,5 +12,15 @@
 
 }
 .common-button:active{
-    transform: scale(2);
+    transform: scale(.99);
+}
+
+.already-account{
+    font-size: .9rem;
+}
+.already-account i{
+    color: blue;
+} 
+.already-account i :hover{
+    text-decoration: underline;
 }
