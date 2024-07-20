@@ -7,17 +7,16 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Errortoast, Successtoast } from './plugin/Toast/Toast';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 
 function App() {
-   useEffect(() => {
-    Successtoast("success");
-    Errortoast("error");
-  }, []);
-
+   
+const {showLoader}= useSelector(store=>store.general)
   return (
     <>
-      {/* <ToastContainer /> */}
-      {/* <Loader /> */}
+      <ToastContainer />
+      {showLoader && <Loader />}
       <Routing />
     </>
   );

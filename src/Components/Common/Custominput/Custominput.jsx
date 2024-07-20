@@ -1,13 +1,20 @@
-import React from 'react'
-import './Custominput.css'
+import React from 'react';
+import './Custominput.css';
 
-function Custominput({type,onblur,onchange,label,value,name}) {
+function Custominput({ type, onblur, onchange, label, value, name }) {
   return (
-    <div className='common-input-box'>
-        <input type= {type} className='common-input' value={value} name={name} onchange={onchange} onblur={onblur}></input>
-        <label htmlFor=''>{label}</label>
+    <div className={`common-input-box ${value ? 'has-value' : ''}`}>
+      <input
+        type={type}
+        className='common-input'
+        value={value}
+        name={name}
+        onChange={onchange}
+        onBlur={onblur}
+      />
+      <label>{label}</label>
     </div>
-  )
+  );
 }
 
-export default Custominput
+export default Custominput;
