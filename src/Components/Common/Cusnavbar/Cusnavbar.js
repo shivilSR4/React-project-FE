@@ -16,11 +16,14 @@ function Cusnavbar() {
       <div className="collapse navbar-collapse" id="navbarText">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           <li className="nav-item active">
-            <a className="nav-link" href="#">Home</a>
+            <a className="nav-link" href="#" onClick={()=>{navigate('/home')}}>Home</a>
           </li>
           {user.role===1 && <li className="nav-item">
             <a className="nav-link" href="#" onClick={()=>{navigate('/newcourt')}}>AddNewCourt</a>
           </li>}
+          <li className="nav-item active">
+            <a className="nav-link" href="#" onClick={()=>{navigate('/courts/courtlist')}}>Courts</a>
+          </li>
         </ul>
         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
           <li className="nav-item dropdown">
