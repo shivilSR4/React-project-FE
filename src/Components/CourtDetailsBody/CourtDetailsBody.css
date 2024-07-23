@@ -22,43 +22,61 @@
     z-index: 2;
 }
 
-.details-image-content button{
+.details-image-content button {
     background: transparent;
     border-radius: 5px;
     border: 1px solid white;
     color: white;
     padding: .3rem 1rem;
 }
-.details-image-content button:hover{
+
+.details-image-content button:hover {
     transform: scale(1.20);
 }
 
-.details-image-content button:active{
+.details-image-content button:active {
     transform: scale(.99);
     background-color: var(--brand-brown);
 }
 
-.range-label{
+.range-label {
     cursor: pointer;
     border: 1.5px solid var(--brand-brown2);
     border-radius: 8px;
 }
 
-.range-label:hover:active{
+.range-label:hover:active {
     background-color: var(--brand-white);
 }
 
-.range-label li{
+.range-label li {
     background-color: var(--brand-white);
-    border:1px thin black ;
+    border: 1px thin black;
 }
 
+.slot-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px; 
+    overflow-y: auto; 
+}
+
+.slot-list li {
+    background-color: var(--brand-white);
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.slot-list li:hover {
+    background-color: #f0f0f0;
+}
 
 .d-flex {
     display: flex;
 }
-
-
 
 .d-column {
     flex-direction: column;

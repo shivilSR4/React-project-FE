@@ -4,19 +4,19 @@ import './Cards.css'
 import { useNavigate } from 'react-router-dom'
 
 
-function Cards() {
+function Cards({court}) {
     const navigate = useNavigate()
   return (
-    <div className='card' onClick={()=>{navigate('/courts/courtdetails')}}>
-        <img src={courtimg} alt='' />
+    <div className='card' onClick={()=>navigate('/courts/courtdetails/'+court._id)}>
+        <img src={`${process.env.REACT_APP_BASE_URL}/images/${court?.courtPics?.[0]?.name}`} alt='' />
 
         <div className='card-body'>
             <h3>
-                    CourtName
+                   {court.name}
             </h3>
             <p>
-                location <br />
-                lets play the game
+                {court.location} <br />
+                {court.address1}
             </p>
 
         </div>
