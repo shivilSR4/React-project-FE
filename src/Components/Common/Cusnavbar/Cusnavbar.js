@@ -7,9 +7,13 @@ import { useNavigate } from 'react-router-dom';
 function Cusnavbar() {
   const {user} = useSelector(state=>state.user)
   const navigate = useNavigate()
+  const logout = ()=>{
+    window.location.href = '/'
+    localStorage.clear()
+  }
   return (
     <nav className="navbar navbar-expand-lg navbar-light " id='navbar'>
-      <span className="navbar-brand" href="#">Green Gr<img src={games}/>d</span>
+      <span className="navbar-brand" href="#" onClick={()=>{navigate('/home')}}>Green Gr<img src={games}/>d</span>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
@@ -31,8 +35,8 @@ function Cusnavbar() {
               {user.Name}
             </a>
             <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <li><a className="dropdown-item" href="#">Profile</a></li>
-              <li><a className="dropdown-item" href="#">Logout</a></li>
+              <li><a className="dropdown-item" href="#" onClick={()=>{navigate('/profile')}}>Profile</a></li>
+              <li><a className="dropdown-item" href="#" onClick={logout}>Logout</a></li>
             </ul>
           </li>
         </ul>

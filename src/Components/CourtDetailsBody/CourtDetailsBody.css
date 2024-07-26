@@ -81,3 +81,19 @@
 .d-column {
     flex-direction: column;
 }
+
+.availableslots{
+    border: 1px solid var(--brand-brown);
+    border-radius: 5px;
+    color: var(--brand-dark);
+    background-color: rgba(195, 166, 166, 0.7);
+    cursor: pointer;
+}
+
+.notavailable{
+border: 1px solid var(--brand-white);
+border-radius: 5px;
+color: var(--brand-light);
+cursor: pointer;
+background-color: rgb(220, 210, 210, .7);
+}

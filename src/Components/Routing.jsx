@@ -6,6 +6,7 @@ import Addnewcourt from '../Pages/Addnewcourt/Addnewcourt'
 import CourtListPage from 'Pages/CourtListPage/CourtListPage'
 import CourtDetailsBody from './CourtDetailsBody/CourtDetailsBody'
 import CourtDetailsPage from 'Pages/CourtDetailsPage/CourtDetailsPage'
+import Profile from 'Pages/Profile/Profile'
 
 function Routing() {
   return (
@@ -13,6 +14,7 @@ function Routing() {
         <Routes>
             <Route path='/' element={<Authpage />} />
             <Route path='/home' element={<Home />} />
+            <Route path='/profile' element={<Profile />}/>
 
             <Route path='/courts'>
 

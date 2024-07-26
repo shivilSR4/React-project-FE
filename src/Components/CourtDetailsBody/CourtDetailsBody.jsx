@@ -22,26 +22,147 @@ import { ToastContainer } from "react-toastify";
 import { showhideLoader } from '../../Redux/generalSlice';
 import { useDispatch } from "react-redux";
 
+
+
 function CourtDetailsBody() {
   const {id} = useParams()
+  const[slotData,setSlotData]=useState([])
+  const[selectedDate,setSelectedDate] = useState(new Date().toISOString().substring(0,10))
+  const[bookingModal,setBookingModal] = useState(false)
   const[filteredTimings,setFilteredTimings]= useState(TIMINGS)
   const[selectedSlots,setSelectedSlots] = useState([])
-    const[opend,setOpend]= useState(false)
+  const[opend,setOpend]= useState(false)
   const [calenderOpen, setCalenderOpen] = useState(false);
   const [openTimeslot, setTimeslot] = useState(false);
   const [singleCourtData,setSingleCourtData] = useState({})
+  const[bookedSlots,setBookedSlots] = useState([])
   const[cost,setCost] = useState('')
   const dispatch = useDispatch()
   useEffect(()=>{
    getSingleCourtData()
+ 
   },[])
-  const getSingleCourtData = ()=>{
+  useEffect(()=>{
+    getSlotdata()
+  
+   },[selectedDate])
+
+   const getSingleCourtData = ()=>{
+    dispatch(showhideLoader(true))
     AxiosInstance.get('users/getsinglecourtdata',{params:{courtId:id}}).then((res)=>{
 setSingleCourtData(res.data)
+dispatch(showhideLoader(false))
     }).catch((err)=>{
   console.log(err);
+  dispatch(showhideLoader(false))
+  Errortoast('something went wrong')
     })
   }
+
+  const getSlotdata = ()=>{
+    dispatch(showhideLoader(true))
+    AxiosInstance.get('users/getslotdata',{params:{courtId:id,date:selectedDate}}).then((res) => {
+      setSlotData(res.data)
+      dispatch(showhideLoader(false))
+    }).catch((err)=>{
+      console.log(err);
+      Errortoast('Something went wrong')
+      dispatch(showhideLoader(false))
+    })
+  }
+
+   async function initiatefunction() {
+
+         
+    const res = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+    );
+
+    if (!res) {
+        Errortoast("Razorpay SDK failed to load. Are you online?");
+        return;
+    }
+
+    const slotIds = bookedSlots.map(ele=>{return ele._id})
+
+    const result = await AxiosInstance.post("/payments/orders",{courtId:id,slotIds:slotIds});
+
+    if (!result) {
+        Errortoast("Server error. Are you online?");
+        return;
+    }
+
+    
+    const { amount, id: order_id, currency,receipt } = result.data;
+
+    const options = {
+        key: process.env.REACT_APP_RP_KEY_ID, 
+        amount: amount.toString(),
+        currency: currency,
+        name: "Green Grid pvt.ltd",
+        description: "booking payments",
+        image: null,
+        order_id: order_id,
+        handler: async function (response) {
+            const data = {
+                orderCreationId: order_id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpaySignature: response.razorpay_signature,
+                receipt,
+                slotIds,
+                courtId:id,
+                date:selectedDate
+            };
+
+            const result = await AxiosInstance.post("/payments/verify", data);
+            setBookingModal(false)
+            getSlotdata()
+            Successtoast('Booking Completed')
+        },
+        prefill: {
+            name: "Soumya Dey",
+            email: "SoumyaDey@example.com",
+            contact: "9999999999",
+        },
+        notes: {
+            address: "Soumya Dey Corporate Office",
+        },
+        theme: {
+            color: "#61dafb",
+        },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+}
+
+
+  function loadScript(src) {
+      return new Promise((resolve) => {
+          const script = document.createElement("script");
+          script.src = src;
+          script.onload = () => {
+              resolve(true);
+          };
+          script.onerror = () => {
+              resolve(false);
+          };
+          document.body.appendChild(script);
+      });}
+  
+
+   const setorDeSelectSlot = (slot)=>{
+        if(bookedSlots.find((ele)=>ele._id===slot._id)){
+         const temp = bookedSlots.filter(ele=>ele._id!==slot._id)
+         setBookedSlots(temp)
+        }else{
+          setBookedSlots([...bookedSlots,slot])
+        }
+   }
+
+
+
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
@@ -93,7 +214,7 @@ const createCourtSchedule = ()=>{
               <p>{singleCourtData.location}</p>
             </div>
             <div className="d-flex align-self-end gap-3 mx-3">
-              <button>
+              <button onClick={()=>setBookingModal(true)}>
                 <img src="" alt="" height={"20px"} />
                 BOOK
               </button>
@@ -180,6 +301,35 @@ const createCourtSchedule = ()=>{
           
         </Modal>
       )}
+
+      {bookingModal && <Modal heading={"Booking Slots"}
+          closeModal={() => setBookingModal(false)}>
+
+            <div className="time-slot-select-modal p-3 h-100 d-flex flex-column">
+            <label htmlFor="" className="mt-1">Start Date :</label>
+            <input type="date" className="p- px-2 mx-2 border rounded-1" value={selectedDate} min={new Date().toISOString().substring(0,10)}
+              onChange={(e)=>setSelectedDate(e.target.value)}
+            />
+            <label htmlFor="">Available Slots</label>
+            <div className="d-flex flex-wrap gap-2 mt-1">
+              {slotData.map((slot)=> <span className={`${
+                bookedSlots.find(ele=>ele._id===slot._id)?'bg-info-subtle':
+                slot.bookedBy ? 'notavailable': 'availableslots'} px-2 py-1 mt-2`}
+              onClick={()=>!slot.bookedBy&&setorDeSelectSlot(slot)}
+              >{slot.slot.name}
+              </span>)}
+                
+            </div>
+            <div className="d-flex justify-content-end mt-2 gap-3 p-2">
+            <button className="common-button bg-black text-white">
+                    Cancel
+                  </button>
+                  <button className="common-button" onClick={initiatefunction}>Book</button>
+                </div>
+
+            </div>
+        
+        </Modal>}
     </div>
   );
 }
