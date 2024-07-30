@@ -19,8 +19,12 @@
     font-size: .9rem;
 }
 .already-account i{
+    cursor: pointer;
     color: blue;
 } 
 .already-account i :hover{
     text-decoration: underline;
+}
+.SignInWithGooglr{
+    
 }

@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../Redux/userSlice';
 import { showhideLoader } from '../../Redux/generalSlice';
+import SignInWithGooglr from '../../Components/signInWithGoogle.js/SignInWithGoogle'
 
 function LoginBox({ setBoxtype }) {
   const [loginData, setLoginData] = useState({});
@@ -36,7 +37,7 @@ function LoginBox({ setBoxtype }) {
       })
       .catch((err) => {
         Errortoast(err?.response?.data?.message || 'something went wrong');
-        dispatch(showhideLoader(false)); // Hide loader on error as well
+        dispatch(showhideLoader(false)); 
       });
   };
 
@@ -52,6 +53,9 @@ function LoginBox({ setBoxtype }) {
         </div>
         <button className='common-button mt-4 align-self-center' onClick={doLogin}>Login</button>
         <p className='already-account mt-4'>Don't have an account <i onClick={() => setBoxtype('Signup')}>sign up here</i></p>
+        <div className=' SignInWithGooglr d-flex justify-content-center align-item-center'> <SignInWithGooglr /></div>
+      
+       
       </div>
     </>
   );

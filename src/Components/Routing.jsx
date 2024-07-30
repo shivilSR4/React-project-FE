@@ -7,6 +7,7 @@ import CourtListPage from 'Pages/CourtListPage/CourtListPage'
 import CourtDetailsBody from './CourtDetailsBody/CourtDetailsBody'
 import CourtDetailsPage from 'Pages/CourtDetailsPage/CourtDetailsPage'
 import Profile from 'Pages/Profile/Profile'
+import OtpVerification from 'Pages/OTP/OtpVerification'
 
 function Routing() {
   return (
@@ -15,6 +16,7 @@ function Routing() {
             <Route path='/' element={<Authpage />} />
             <Route path='/home' element={<Home />} />
             <Route path='/profile' element={<Profile />}/>
+            <Route path='/otp' element={<OtpVerification />}/>
 
             <Route path='/courts'>
 
